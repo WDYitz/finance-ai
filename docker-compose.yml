@@ -8,15 +8,15 @@ services:
       - POSTGRESQL_USERNAME=${POSTGRES_USER}
       - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRESQL_DATABASE=${POSTGRES_DB}
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: finance-ai
-    ports:
-      - '3000:3000'
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
-    depends_on:
-      - db
-    restart: unless-stopped
+      #finance-ai:
+      #build:
+      #context: .
+      #dockerfile: Dockerfile
+      #container_name: finance
+      #ports:
+      #- '3000:3000'
+      #environment:
+      #- DATABASE_URL=${DATABASE_URL}
+      #depends_on:
+      #- db
+      #restart: unless-stopped
