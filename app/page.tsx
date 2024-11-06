@@ -1,11 +1,7 @@
-import { Button } from "@/components/ui/button";
+import LoginPage from "./login/page";
 
 const Home = () => {
-  return (
-    <main className="flex flex-col items-center gap-8 sm:items-start">
-      <Button>Click me</Button>
-    </main>
-  );
+  return <LoginPage />;
 };
 
 export default Home;

@@ -18,7 +18,8 @@ export const metadata: Metadata = {
     default: "Finance AI",
     template: "%s | Finance AI",
   },
-  description: "Finance AI is a web app that helps you manage your finances.",
+  description:
+    "A Finance AI é uma plataforma de gestão financeira que utiliza IA para monitorar suas movimentações, e oferecer insights personalizados, facilitando o controle do seu orçamento.",
 };
 
 export default function RootLayout({
@@ -27,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
