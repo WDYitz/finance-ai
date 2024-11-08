@@ -7,13 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "db:migrate/dev": "prisma migrate dev",
+    "db:migrate/prod": "prisma migrate deploy",
+    "db:studio": "prisma studio"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.7.5",
     "@clerk/themes": "^2.1.13",
     "@prisma/client": "^5.21.1",
     "@radix-ui/react-slot": "^1.1.0",
+    "@tanstack/react-table": "^8.20.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.454.0",

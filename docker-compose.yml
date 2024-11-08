@@ -8,15 +8,20 @@ services:
       - POSTGRESQL_USERNAME=${POSTGRES_USER}
       - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRESQL_DATABASE=${POSTGRES_DB}
-      #finance-ai:
-      #build:
-      #context: .
-      #dockerfile: Dockerfile
-      #container_name: finance
-      #ports:
-      #- '3000:3000'
-      #environment:
-      #- DATABASE_URL=${DATABASE_URL}
-      #depends_on:
-      #- db
-      #restart: unless-stopped
+    volumes:
+      - ./.postgresql-data:/var/lib/postgresql/data
+
+volumes:
+  .postgresql-data:
+    #finance-ai:
+    #build:
+    #context: .
+    #dockerfile: Dockerfile
+    #container_name: finance
+    #ports:
+    #- '3000:3000'
+    #environment:
+    #- DATABASE_URL=${DATABASE_URL}
+    #depends_on:
+    #- db
+    #restart: unless-stopped
