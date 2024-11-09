@@ -1,7 +1,8 @@
+import SkeletonButtonLoading from "@/components/skeleton-button-loading";
 import { Button } from "@/components/ui/button";
 import { ClerkLoaded, ClerkLoading, SignInButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
-import { Loader2, LogInIcon } from "lucide-react";
+import { LogInIcon } from "lucide-react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
@@ -38,12 +39,7 @@ const LoginPage = async () => {
         </ClerkLoaded>
 
         <ClerkLoading>
-          <Button
-            className="animate-pulse border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground"
-            disabled
-          >
-            <Loader2 className="animate-spin text-white" />
-          </Button>
+          <SkeletonButtonLoading />
         </ClerkLoading>
       </div>
 
