@@ -42,6 +42,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { toast } from "sonner";
 
 interface UpsertTransactionDialogProps {
   isOpen: boolean;
@@ -74,6 +75,9 @@ const UpsertTransactionDialog = ({
     try {
       await upsertTransaction({ ...data, id: transactionId });
       setIsOpen(false);
+      toast.success("Transação adicionada com sucesso", {
+        description: `${data.type === TransactionType.EXPENSE ? "Despesa" : "Receita"} de R$ ${data.amount} adicionada com sucesso`,
+      });
       form.reset();
     } catch (error) {
       console.log(error);
