@@ -1,8 +1,9 @@
 "use client";
-import { UserButton } from "@clerk/nextjs";
+import { ClerkLoaded, ClerkLoading, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import SkeletonButtonLoading from "./skeleton-button-loading";
 
 const NavBar = () => {
   const pathname = usePathname();
@@ -42,8 +43,14 @@ const NavBar = () => {
           Assinatura
         </Link>
       </div>
-      <div className="flex flex-col">
-        <UserButton showName />
+      <div className="flex flex-col items-center justify-center border-solid border-muted-foreground">
+        <ClerkLoaded>
+          <UserButton showName />
+        </ClerkLoaded>
+
+        <ClerkLoading>
+          <SkeletonButtonLoading />
+        </ClerkLoading>
       </div>
     </nav>
   );
