@@ -4,13 +4,13 @@ import {
   TransactionType,
 } from "@prisma/client";
 
-export const TRANSACTION_TYPE_LABEL = {
+export const TRANSACTION_TYPE_LABELS = {
   EXPENSE: "Despesa",
   INVESTMENT: "Investimento",
   DEPOSIT: "Deposito",
 };
 
-export const TRANSACTION_CATEGORY_LABEL = {
+export const TRANSACTION_CATEGORY_LABELS = {
   EDUCATION: "Educação",
   ENTERTAINMENT: "Entretenimento",
   FOOD: "Alimentação",
@@ -34,15 +34,15 @@ export const TRANSACTION_PAYMENT_METHOD_LABELS = {
 
 export const TRANSACTION_TYPE_OPTIONS = [
   {
-    label: TRANSACTION_TYPE_LABEL[TransactionType.EXPENSE],
+    label: TRANSACTION_TYPE_LABELS[TransactionType.EXPENSE],
     value: TransactionType.EXPENSE,
   },
   {
-    label: TRANSACTION_TYPE_LABEL[TransactionType.INVESTMENT],
+    label: TRANSACTION_TYPE_LABELS[TransactionType.INVESTMENT],
     value: TransactionType.INVESTMENT,
   },
   {
-    label: TRANSACTION_TYPE_LABEL[TransactionType.DEPOSIT],
+    label: TRANSACTION_TYPE_LABELS[TransactionType.DEPOSIT],
     value: TransactionType.DEPOSIT,
   },
 ];
@@ -84,39 +84,39 @@ export const TRANSACTION_PAYMENT_METHODS_OPTIONS = [
 
 export const TRANSACTION_CATEGORY_OPTIONS = [
   {
-    label: TRANSACTION_CATEGORY_LABEL[TransactionCategory.EDUCATION],
+    label: TRANSACTION_CATEGORY_LABELS[TransactionCategory.EDUCATION],
     value: TransactionCategory.EDUCATION,
   },
   {
-    label: TRANSACTION_CATEGORY_LABEL[TransactionCategory.ENTERTAINMENT],
+    label: TRANSACTION_CATEGORY_LABELS[TransactionCategory.ENTERTAINMENT],
     value: TransactionCategory.ENTERTAINMENT,
   },
   {
-    label: TRANSACTION_CATEGORY_LABEL[TransactionCategory.FOOD],
+    label: TRANSACTION_CATEGORY_LABELS[TransactionCategory.FOOD],
     value: TransactionCategory.FOOD,
   },
   {
-    label: TRANSACTION_CATEGORY_LABEL[TransactionCategory.HEALTH],
+    label: TRANSACTION_CATEGORY_LABELS[TransactionCategory.HEALTH],
     value: TransactionCategory.HEALTH,
   },
   {
-    label: TRANSACTION_CATEGORY_LABEL[TransactionCategory.HOUSING],
+    label: TRANSACTION_CATEGORY_LABELS[TransactionCategory.HOUSING],
     value: TransactionCategory.HOUSING,
   },
   {
-    label: TRANSACTION_CATEGORY_LABEL[TransactionCategory.OTHER],
+    label: TRANSACTION_CATEGORY_LABELS[TransactionCategory.OTHER],
     value: TransactionCategory.OTHER,
   },
   {
-    label: TRANSACTION_CATEGORY_LABEL[TransactionCategory.SALARY],
+    label: TRANSACTION_CATEGORY_LABELS[TransactionCategory.SALARY],
     value: TransactionCategory.SALARY,
   },
   {
-    label: TRANSACTION_CATEGORY_LABEL[TransactionCategory.TRANSPORTATION],
+    label: TRANSACTION_CATEGORY_LABELS[TransactionCategory.TRANSPORTATION],
     value: TransactionCategory.TRANSPORTATION,
   },
   {
-    label: TRANSACTION_CATEGORY_LABEL[TransactionCategory.UTILITY],
+    label: TRANSACTION_CATEGORY_LABELS[TransactionCategory.UTILITY],
     value: TransactionCategory.UTILITY,
   },
 ];
