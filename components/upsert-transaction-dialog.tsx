@@ -3,7 +3,16 @@ import {
   TRANSACTION_PAYMENT_METHODS_OPTIONS,
   TRANSACTION_TYPE_OPTIONS,
 } from "@/constants/transactions";
-import { ArrowUpDown } from "lucide-react";
+import { addTransactionformSchema } from "@/schemas/addTransactionformSchema";
+import { upsertTransaction } from "@/services/transactions";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  TransactionCategory,
+  TransactionPaymentMethod,
+  TransactionType,
+} from "@prisma/client";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import MoneyInput from "./money-input";
 import { Button } from "./ui/button";
 import { DatePicker } from "./ui/date-picker";
@@ -33,16 +42,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { addTransactionformSchema } from "@/schemas/addTransactionformSchema";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import {
-  TransactionCategory,
-  TransactionPaymentMethod,
-  TransactionType,
-} from "@prisma/client";
-import { upsertTransaction } from "@/services/transactions";
 
 interface UpsertTransactionDialogProps {
   isOpen: boolean;
@@ -52,11 +51,6 @@ interface UpsertTransactionDialogProps {
 }
 
 type FormSchema = z.infer<typeof addTransactionformSchema>;
-
-/* Omit<
-  z.infer<typeof addTransactionformSchema>,
-  "paymentMethod"
-> & { paymentmethod: string }; */
 
 const UpsertTransactionDialog = ({
   isOpen,
@@ -98,12 +92,7 @@ const UpsertTransactionDialog = ({
         }
       }}
     >
-      <DialogTrigger asChild>
-        <Button className="rounded-full">
-          Adicionar Transação
-          <ArrowUpDown />
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild></DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
@@ -251,7 +240,6 @@ const UpsertTransactionDialog = ({
                 </Button>
               </DialogClose>
               <Button type="submit">
-                {" "}
                 {isUpdate ? "Atualizar" : "Adicionar"}
               </Button>
             </DialogFooter>
