@@ -10,8 +10,12 @@ import {
 } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
-export const getAllTransactions = async () => {
-  const transactions = await db.transaction.findMany({});
+export const getAllUserTransactions = async (userId: string) => {
+  const transactions = await db.transaction.findMany({
+    where: {
+      userId,
+    },
+  });
 
   return transactions;
 };
@@ -42,11 +46,11 @@ export const upsertTransaction = async (params: AddTransactionParams) => {
   };
 
   await db.transaction.upsert({
-    where: {
-      id: params.id,
-    },
     update: { ...data, userId },
     create: { ...data, userId },
+    where: {
+      id: params?.id ?? "",
+    },
   });
   revalidatePath("/transactions");
 };
