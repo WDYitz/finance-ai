@@ -3,12 +3,8 @@
 import { db } from "@/lib/prisma";
 import { addTransactionformSchema } from "@/schemas/addTransactionformSchema";
 import { auth } from "@clerk/nextjs/server";
-import {
-  type TransactionCategory,
-  type TransactionPaymentMethod,
-  type TransactionType,
-} from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import type { AddTransactionParams } from "./interfaces/add-transaction-params";
 
 export const getAllUserTransactions = async (userId: string) => {
   const transactions = await db.transaction.findMany({
@@ -19,16 +15,6 @@ export const getAllUserTransactions = async (userId: string) => {
 
   return transactions;
 };
-
-interface AddTransactionParams {
-  id?: string;
-  name: string;
-  amount: number;
-  type: TransactionType;
-  category: TransactionCategory;
-  paymentmethod: TransactionPaymentMethod;
-  date: Date;
-}
 
 export const upsertTransaction = async (params: AddTransactionParams) => {
   addTransactionformSchema.parse(params);
@@ -55,11 +41,44 @@ export const upsertTransaction = async (params: AddTransactionParams) => {
   revalidatePath("/transactions");
 };
 
-/* export const deleteTransaction = async (id: number) => {
-  await db.transaction.delete({
-    where: {
-      id
-    }
-  })
-  revalidatePath("/transactions")
-} */
+export const getTotalInvestment = async () => {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  const totalInvestment = (
+    await db.transaction.aggregate({
+      where: { type: "INVESTMENT" },
+      _sum: { amount: true },
+    })
+  )._sum?.amount;
+
+  return Number(totalInvestment);
+};
+
+export const getTotalExpenses = async () => {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  const totalExpenses = (
+    await db.transaction.aggregate({
+      where: { type: "EXPENSE" },
+      _sum: { amount: true },
+    })
+  )._sum?.amount;
+
+  return Number(totalExpenses);
+};
+
+export const getTotalDeposits = async () => {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  const totalDeposits = (
+    await db.transaction.aggregate({
+      where: { type: "DEPOSIT" },
+      _sum: { amount: true },
+    })
+  )._sum?.amount;
+
+  return Number(totalDeposits);
+};
