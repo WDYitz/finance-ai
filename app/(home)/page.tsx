@@ -1,9 +1,12 @@
 import NavBar from "@/components/navbar";
+import { getDashboard } from "@/services/transactions";
 import { auth } from "@clerk/nextjs/server";
+import { isMatch } from "date-fns";
 import { redirect } from "next/navigation";
 import SummaryCards from "./_components/summary-cards";
 import MonthSelect from "./_components/time-select";
-import { isMatch } from "date-fns";
+import TransactionPieChart from "./_components/transactions-pie-chart";
+import ExpensesPerCategory from "./_components/expenses-per-category";
 
 interface HomeProps {
   searchParams: {
@@ -19,6 +22,8 @@ const Home = async ({ searchParams }: HomeProps) => {
     !searchParams.month || !isMatch(searchParams.month, "MM");
   if (isMonthInvalid) redirect("?month=01");
 
+  const dashboard = await getDashboard(searchParams.month);
+
   return (
     <>
       <NavBar />
@@ -27,7 +32,15 @@ const Home = async ({ searchParams }: HomeProps) => {
           <h1 className="text-2xl font-bold">Dashboard</h1>
           <MonthSelect />
         </div>
-        <SummaryCards month={searchParams.month} />
+        <div className="grid grid-cols-[2fr,1fr]">
+          <div className="flex flex-col gap-6">
+            <SummaryCards month={searchParams.month} {...dashboard} />
+            <div className="grid grid-cols-3 grid-row-1 gap-6">
+              <TransactionPieChart {...dashboard} />
+              <ExpensesPerCategory expensesPerCategory={dashboard.totalExpensePerCategory} />
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

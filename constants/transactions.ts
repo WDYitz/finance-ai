@@ -3,6 +3,7 @@ import {
   TransactionPaymentMethod,
   TransactionType,
 } from "@prisma/client";
+import type { ChartConfig } from "@/components/ui/chart";
 
 export const TRANSACTION_TYPE_LABELS = {
   EXPENSE: "Despesa",
@@ -120,3 +121,20 @@ export const TRANSACTION_CATEGORY_OPTIONS = [
     value: TransactionCategory.UTILITY,
   },
 ];
+
+
+//////* TRANSACTION PIE CHART *//////
+export const chartConfig = {
+  [TransactionType.EXPENSE]: {
+    label: "Despesas",
+    color: "#FFFFFF",
+  },
+  [TransactionType.INVESTMENT]: {
+    label: "Investimento",
+    color: "#55B02E",
+  },
+  [TransactionType.DEPOSIT]: {
+    label: "Receita",
+    color: "#E93030",
+  },
+} satisfies ChartConfig

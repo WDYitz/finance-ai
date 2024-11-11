@@ -5,6 +5,8 @@ import { addTransactionformSchema } from "@/schemas/addTransactionformSchema";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import type { AddTransactionParams } from "./interfaces/add-transaction-params";
+import { TransactionType } from "@prisma/client";
+import type { ITotalExpensePerCategory } from "./interfaces/total-expense-per-category";
 
 export const getAllUserTransactions = async (userId: string) => {
   const transactions = await db.transaction.findMany({
@@ -41,59 +43,83 @@ export const upsertTransaction = async (params: AddTransactionParams) => {
   revalidatePath("/transactions");
 };
 
-const whereContructor = (month: string) => {
-  return {
-    date: {
-      gte: new Date(`2024-${month}-01`),
-      lt: new Date(`2024-${month}-31`),
-    },
-  };
-};
-
-export const getTotalInvestment = async (month: string) => {
+export const getDashboard = async (month: string) => {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
+  const whereContructor = (month: string) => {
+    return {
+      date: {
+        gte: new Date(`2024-${month}-01`),
+        lt: new Date(`2024-${month}-31`),
+      },
+    };
+  };
+
   const where = whereContructor(month);
 
-  const totalInvestment = (
+  const investmentTotal = Number((
     await db.transaction.aggregate({
       where: { ...where, type: "INVESTMENT" },
       _sum: { amount: true },
-    })
-  )._sum?.amount;
+    }))?._sum?.amount
+  )
 
-  return Number(totalInvestment);
-};
-
-export const getTotalExpenses = async (month: string) => {
-  const { userId } = await auth();
-  if (!userId) throw new Error("Unauthorized");
-
-  const where = whereContructor(month);
-
-  const totalExpenses = (
+  const expensesTotal = Number((
     await db.transaction.aggregate({
       where: { ...where, type: "EXPENSE" },
       _sum: { amount: true },
-    })
-  )._sum?.amount;
+    }))._sum?.amount
+  )
 
-  return Number(totalExpenses);
-};
-
-export const getTotalDeposits = async (month: string) => {
-  const { userId } = await auth();
-  if (!userId) throw new Error("Unauthorized");
-
-  const where = whereContructor(month);
-
-  const totalDeposits = (
+  const depositTotal = Number((
     await db.transaction.aggregate({
       where: { ...where, type: "DEPOSIT" },
       _sum: { amount: true },
-    })
-  )._sum?.amount;
+    }))._sum?.amount
+  )
 
-  return Number(totalDeposits);
-};
+  const balance = depositTotal - expensesTotal - investmentTotal;
+
+  const transactionsTotal = Number((
+    await db.transaction.aggregate({
+      where,
+      _sum: { amount: true },
+    }))._sum?.amount
+  )
+
+  const typesPercentage = {
+    [TransactionType.INVESTMENT]: Math.round(
+      (Number(investmentTotal || 0) / Number(transactionsTotal)) * 100,
+    ),
+    [TransactionType.EXPENSE]: Math.round(
+      (Number(expensesTotal || 0) / Number(transactionsTotal)) * 100,
+    ),
+    [TransactionType.DEPOSIT]: Math.round(
+      (Number(depositTotal || 0) / Number(transactionsTotal)) * 100,
+    ),
+  }
+
+  const totalExpensePerCategory: ITotalExpensePerCategory[] = (
+    await db.transaction.groupBy({
+      by: ["category"],
+      where: { ...where, type: "EXPENSE" },
+      _sum: { amount: true },
+    })
+  ).map((category) => ({
+    category: category.category,
+    total: Number(category._sum.amount),
+    percentageOfTotal: Math.round((Number(category._sum.amount) / Number(expensesTotal)) * 100),
+  }))
+
+  return {
+    investmentTotal,
+    expensesTotal,
+    depositTotal,
+    balance,
+    typesPercentage,
+    totalExpensePerCategory
+  }
+
+}
+
