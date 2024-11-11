@@ -7,6 +7,7 @@ import SummaryCards from "./_components/summary-cards";
 import MonthSelect from "./_components/time-select";
 import TransactionPieChart from "./_components/transactions-pie-chart";
 import ExpensesPerCategory from "./_components/expenses-per-category";
+import LastTransaction from "./_components/last-transaction";
 
 interface HomeProps {
   searchParams: {
@@ -27,19 +28,20 @@ const Home = async ({ searchParams }: HomeProps) => {
   return (
     <>
       <NavBar />
-      <div className="space-y-6 p-6">
+      <div className="space-y-6 p-6 flex flex-col overflow-hidden">
         <div className="flex justify-between">
           <h1 className="text-2xl font-bold">Dashboard</h1>
           <MonthSelect />
         </div>
-        <div className="grid grid-cols-[2fr,1fr]">
-          <div className="flex flex-col gap-6">
+        <div className="grid grid-cols-[2fr,1fr] gap-6 overflow-hidden">
+          <div className="flex flex-col gap-6 overflow-hidden">
             <SummaryCards month={searchParams.month} {...dashboard} />
             <div className="grid grid-cols-3 grid-row-1 gap-6">
               <TransactionPieChart {...dashboard} />
               <ExpensesPerCategory expensesPerCategory={dashboard.totalExpensePerCategory} />
             </div>
           </div>
+          <LastTransaction lastTransaction={dashboard.lastTransactions} />
         </div>
       </div>
     </>

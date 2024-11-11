@@ -32,7 +32,7 @@ const TransactionPieChart = ({ depositTotal, expensesTotal, investmentTotal, typ
   ]
 
   return (
-    <Card className="flex flex-col p-12">
+    <Card className="flex flex-col p-6">
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
@@ -47,7 +47,7 @@ const TransactionPieChart = ({ depositTotal, expensesTotal, investmentTotal, typ
               data={chartData}
               dataKey="amount"
               nameKey="type"
-              innerRadius={60}
+              innerRadius={70}
             />
           </PieChart>
         </ChartContainer>
