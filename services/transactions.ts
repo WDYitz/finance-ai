@@ -49,6 +49,7 @@ export const getDashboard = async (month: string) => {
 
   const whereContructor = (month: string) => {
     return {
+      userId,
       date: {
         gte: new Date(`2024-${month}-01`),
         lt: new Date(`2024-${month}-31`),
