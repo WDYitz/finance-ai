@@ -1,10 +1,5 @@
 import SummaryCard from "@/app/(home)/_components/summary-card";
 import {
-  getTotalDeposits,
-  getTotalExpenses,
-  getTotalInvestment,
-} from "@/services/transactions";
-import {
   PiggyBankIcon,
   TrendingDown,
   TrendingUp,
@@ -13,15 +8,18 @@ import {
 
 interface SummaryCardsProsp {
   month: string;
+  balance: number;
+  depositTotal: number;
+  expensesTotal: number;
+  investmentTotal: number;
 }
 
-const SummaryCards = async ({ month }: SummaryCardsProsp) => {
-  const [deposit, expense, investment] = await Promise.all([
-    getTotalDeposits(month),
-    getTotalExpenses(month),
-    getTotalInvestment(month),
-  ]);
-  const balance = deposit - expense - investment;
+const SummaryCards = async ({
+  balance,
+  depositTotal,
+  expensesTotal,
+  investmentTotal,
+}: SummaryCardsProsp) => {
   return (
     <div className="space-y-6">
       <SummaryCard
@@ -34,17 +32,17 @@ const SummaryCards = async ({ month }: SummaryCardsProsp) => {
         <SummaryCard
           icon={<PiggyBankIcon size={16} />}
           title="Investido"
-          amount={investment}
+          amount={investmentTotal}
         />
         <SummaryCard
           icon={<TrendingUp size={16} className="text-primary" />}
           title="Receita"
-          amount={deposit}
+          amount={depositTotal}
         />
         <SummaryCard
           icon={<TrendingDown size={16} className="text-red-500" />}
           title="Despesas"
-          amount={expense}
+          amount={expensesTotal}
         />
       </div>
     </div>
