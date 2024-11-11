@@ -41,13 +41,24 @@ export const upsertTransaction = async (params: AddTransactionParams) => {
   revalidatePath("/transactions");
 };
 
-export const getTotalInvestment = async () => {
+const whereContructor = (month: string) => {
+  return {
+    date: {
+      gte: new Date(`2024-${month}-01`),
+      lt: new Date(`2024-${month}-31`),
+    },
+  };
+};
+
+export const getTotalInvestment = async (month: string) => {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
+  const where = whereContructor(month);
+
   const totalInvestment = (
     await db.transaction.aggregate({
-      where: { type: "INVESTMENT" },
+      where: { ...where, type: "INVESTMENT" },
       _sum: { amount: true },
     })
   )._sum?.amount;
@@ -55,13 +66,15 @@ export const getTotalInvestment = async () => {
   return Number(totalInvestment);
 };
 
-export const getTotalExpenses = async () => {
+export const getTotalExpenses = async (month: string) => {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
+  const where = whereContructor(month);
+
   const totalExpenses = (
     await db.transaction.aggregate({
-      where: { type: "EXPENSE" },
+      where: { ...where, type: "EXPENSE" },
       _sum: { amount: true },
     })
   )._sum?.amount;
@@ -69,13 +82,15 @@ export const getTotalExpenses = async () => {
   return Number(totalExpenses);
 };
 
-export const getTotalDeposits = async () => {
+export const getTotalDeposits = async (month: string) => {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
+  const where = whereContructor(month);
+
   const totalDeposits = (
     await db.transaction.aggregate({
-      where: { type: "DEPOSIT" },
+      where: { ...where, type: "DEPOSIT" },
       _sum: { amount: true },
     })
   )._sum?.amount;

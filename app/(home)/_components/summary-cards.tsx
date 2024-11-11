@@ -11,15 +11,19 @@ import {
   WalletIcon,
 } from "lucide-react";
 
-const SummaryCards = async () => {
+interface SummaryCardsProsp {
+  month: string;
+}
+
+const SummaryCards = async ({ month }: SummaryCardsProsp) => {
   const [deposit, expense, investment] = await Promise.all([
-    getTotalDeposits(),
-    getTotalExpenses(),
-    getTotalInvestment(),
+    getTotalDeposits(month),
+    getTotalExpenses(month),
+    getTotalInvestment(month),
   ]);
   const balance = deposit - expense - investment;
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <SummaryCard
         icon={<WalletIcon size={16} />}
         title="Saldo"
