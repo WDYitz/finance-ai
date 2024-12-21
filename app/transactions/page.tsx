@@ -6,11 +6,14 @@ import { transactionsColumns } from "./_columns";
 import AddTransactionButton from "@/components/add-transaction-button";
 import NavBar from "@/components/navbar";
 
+
+
 const TransactionsPage = async () => {
   const { userId } = auth();
   if (!userId) redirect("/login");
 
   const transactions = await getAllUserTransactions(userId);
+
 
   return (
     <>

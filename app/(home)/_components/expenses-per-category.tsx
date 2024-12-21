@@ -1,6 +1,6 @@
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { TRANSACTION_CATEGORY_LABELS } from "@/constants/transactions";
 import type { ITotalExpensePerCategory } from "@/services/interfaces/total-expense-per-category";
 
@@ -27,6 +27,7 @@ const ExpensesPerCategory = ({ expensesPerCategory }: ExpensesPerCategoryProps) 
           ))
         }
       </CardContent>
+      <ScrollBar orientation="vertical" />
     </ScrollArea>
   );
 }
