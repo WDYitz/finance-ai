@@ -40,19 +40,21 @@ export const upsertTransaction = async (params: AddTransactionParams) => {
       id: params?.id ?? "",
     },
   });
-  revalidatePath("/transactions");
+  revalidatePath("/transactions")
 };
 
 export const getDashboard = async (month: string) => {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
+  const year = new Date().getFullYear()
+
   const whereContructor = (month: string) => {
     return {
       userId,
       date: {
-        gte: new Date(`2024-${month}-01`),
-        lt: new Date(`2024-${month}-31`),
+        gte: new Date(`${year}-${month}-01`),
+        lt: new Date(`${year}-${month}-31`),
       },
     };
   };
